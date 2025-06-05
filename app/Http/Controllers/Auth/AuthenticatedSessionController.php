@@ -11,38 +11,42 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
     public function create(): View
     {
         return view('auth.login');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
     public function store(LoginRequest $request): RedirectResponse
-{
-    $credentials = $request->only('email', 'password');
+    {
+        $credentials = $request->only('email', 'password');
 
-    $user = \App\Models\User::where('email', $credentials['email'])->first();
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
 
-    if (!$user) {
+        if (!$user) {
+            return back()->withErrors(['email' => 'These credentials do not match our records.']);
+        }
+
+        if (!$user->is_approved) {
+            return back()->withErrors(['email' => 'Your account is not approved by the admin yet.']);
+        }
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/dashboard');
+        }
+
         return back()->withErrors(['email' => 'These credentials do not match our records.']);
     }
 
-    // Check if approved
-    if (!$user->is_approved) {
-        return back()->withErrors(['email' => 'Your account is not approved by the admin yet.']);
-    }
+    // 🔧 Add this destroy method to fix logout
+    public function destroy(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
 
-    // Now try logging in
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-        return redirect()->intended('dashboard');
-    }
+        $request->session()->invalidate();
 
-    return back()->withErrors(['email' => 'These credentials do not match our records.']);
-}
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+    }
 }
