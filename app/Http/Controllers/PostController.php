@@ -2,23 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth')->except(['index']);
-        $this->middleware('verified.user')->only(['create', 'store']);
-    }
-    public function index()
-    {
-        $posts = Post::with('user')->latest()->get();
-        return view('posts.index', compact('posts'));
-    }
-
     public function create()
     {
         return view('posts.create');
@@ -27,12 +16,22 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'content' => 'required',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
         ]);
 
-        Auth::user()->posts()->create($request->only('title', 'content'));
+        Post::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'user_id' => Auth::id(),
+        ]);
 
-        return redirect()->route('posts.index')->with('success', 'Post created successfully!');
+        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
+    }
+
+    public function index()
+    {
+        $posts = Post::latest()->get();
+        return view('posts.index', compact('posts'));
     }
 }
