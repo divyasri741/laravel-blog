@@ -1,61 +1,57 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+ ##Laravel Blog-system
+ This is a simple Laravel-based blogging platform developed as part of an intern task. It includes user authentication, admin approval, and basic dashboard features.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+ ##Setup Instructions
+ Follow the steps below to set up and run the Laravel Blog system:
+ A. Create a new Laravel project
+    composer create-project laravel/laravel blog-system 
+ B. Set up database connection
+    Open the .env file in your project root and update the database info:
+ C. Install Laravel Breeze for Authentication scaffolding
+    composer require laravel/breeze --dev
+    php artisan breeze:install
+    npm install
+    npm run dev
+ D. Run migrations to create tables in DB
+ Laravel comes with migration files to create the users table and others needed.
+    php artisan migrate-This will create the users table in your database with fields like id, name, email, password, timestamps, etc.
+ E. Start the Laravel development server
+    php artisan serve
 
-## About Laravel
+##Key Features Implemented
+ A.User Registration:
+  1.Users can sign up with name, email, and password.
+  2.Registration page is styled using Laravel Breeze
+ B.Secure Login System:
+  1.Only users with correct credentials can log in.
+  2.Passwords are securely hashed.
+ C.Admin Approval System:
+  1.A new field is_approved is added to the users table.
+  2.Newly registered users cannot log in until an admin sets is_approved = 1.
+  3.If not approved, the user sees a message:
+    “Your account is not approved yet. Please contact the administrator.”
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+##Challenges faced
+ A.npm install was showing many errors in CMD
+  1.I solved it by running npm install in PowerShell.
+  2.Also, every time before installing, I had to clear the npm cache using:
+    npm cache clean --force
+ B.Laravel was not connected to the default database
+  1.changed the .env file to match our custom database.
+  2.This took time to figure out
+ C.Admin approval feature was not working at first
+  1.I forgot to create the is_approved column.
+  2.Later, added a migration and updated the login controller.
+ D.Sometimes faced blade file path or route issues
+  1.solved by checking file locations and correcting names.
+ 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
