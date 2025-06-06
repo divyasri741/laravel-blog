@@ -4,15 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    // Display user's own posts
+    public function index()
+    {
+        $posts = Post::where('user_id', auth()->id())->latest()->get();
+        return view('posts.index', compact('posts'));
+    }
+
+    // Show create form
     public function create()
     {
         return view('posts.create');
     }
 
+    // Store new post
     public function store(Request $request)
     {
         $request->validate([
@@ -21,17 +29,18 @@ class PostController extends Controller
         ]);
 
         Post::create([
+            'user_id' => auth()->id(),
             'title' => $request->title,
             'content' => $request->content,
-            'user_id' => Auth::id(),
         ]);
 
-        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
+        return redirect()->route('dashboard')->with('success', 'Post created successfully!');
     }
 
-    public function index()
+    
+    public function publicIndex()
     {
-        $posts = Post::latest()->get();
-        return view('posts.index', compact('posts'));
+        $posts = Post::latest()->with('user')->get();
+        return view('posts.public', compact('posts'));
     }
 }

@@ -1,12 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>All Posts</h2>
-    @foreach ($posts as $post)
-        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-            <h3>{{ $post->title }}</h3>
-            <p>{{ $post->content }}</p>
-            <small>Posted by: {{ $post->user->name }}</small>
-        </div>
-    @endforeach
+    <div class="container">
+        <h2>All Blog Posts</h2>
+
+        @if(session('success'))
+            <div style="color: green;">{{ session('success') }}</div>
+        @endif
+
+        @if($posts->count() > 0)
+            <ul>
+                @foreach($posts as $post)
+                    <li style="margin-bottom: 15px;">
+                        <strong>{{ $post->title }}</strong> <br>
+                        <small>By {{ $post->user->name ?? 'Unknown' }} | {{ $post->created_at->format('d M Y, h:i A') }}</small>
+                        <p>{{ $post->content }}</p>
+                    </li>
+                @endforeach
+            </ul>
+        @else
+            <p>No posts found.</p>
+        @endif
+    </div>
 @endsection
+

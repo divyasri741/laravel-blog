@@ -1,15 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Create Post</h2>
+<div class="container">
+    <h1>Create Post</h1>
     <form method="POST" action="{{ route('posts.store') }}">
         @csrf
-        <label>Title:</label>
-        <input type="text" name="title" required><br><br>
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" name="title" id="title" required>
+        </div>
 
-        <label>Content:</label><br>
-        <textarea name="content" rows="5" required></textarea><br><br>
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea class="form-control" name="content" id="content" rows="5" required></textarea>
+        </div>
 
-        <button type="submit">Create</button>
+        <button type="submit" class="btn btn-primary">Publish</button>
     </form>
+</div>
 @endsection
+
