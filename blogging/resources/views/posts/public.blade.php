@@ -1,19 +1,15 @@
-<!-- resources/views/posts/public.blade.php -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>All Blog Posts</title>
-</head>
-<body>
-    <h1>All Blog Posts</h1>
+@extends('layouts.app')
 
-    @foreach($posts as $post)
-        <div style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc;">
-            <h2>{{ $post->title }}</h2>
+@section('content')
+    <h1>All Blog Posts (Public)</h1>
+
+    @forelse ($posts as $post)
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <h3>{{ $post->title }}</h3>
             <p>{{ $post->content }}</p>
-            <p><strong>Author ID:</strong> {{ $post->user_id }}</p>
+            <small>By User ID: {{ $post->user_id }} | Posted on {{ $post->created_at->format('d M Y') }}</small>
         </div>
-    @endforeach
-
-</body>
-</html>
+    @empty
+        <p>No posts available.</p>
+    @endforelse
+@endsection
